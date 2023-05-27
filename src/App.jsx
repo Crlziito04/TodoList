@@ -9,8 +9,10 @@ const defaultTodos = [
   { text: "Tarea 1", completed: true },
   { text: "Tarea 2", completed: false },
   { text: "Tarea 3", completed: false },
-  { text: "Tarea 4", completed: true },
+  { text: "Tarea 4", completed: false },
 ];
+
+//context
 
 function App() {
   //Obtener el value del todoSearch
@@ -44,6 +46,9 @@ function App() {
       <TodoCounter completed={completedTodos} total={totalTodos} />
       <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 
+      {/* {searchValue === "" ? (
+        <h1>Nada</h1>
+      ) : ( */}
       <TodoList>
         {searchTodos.map((todo) => (
           <TodoItem
@@ -55,6 +60,7 @@ function App() {
           />
         ))}
       </TodoList>
+      {/* )} */}
 
       <CreateTodoButton />
     </>
