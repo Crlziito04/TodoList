@@ -5,20 +5,41 @@ import { TodoList } from "./components/TodoList/TodoList";
 import { TodoItem } from "./components/TodoItem/TodoItem";
 import { CreateTodoButton } from "./components/CreateTodoButton/CreateTodoButton";
 
-const defaultTodos = [
-  { text: "Tarea 1", completed: true },
-  { text: "Tarea 2", completed: false },
-  { text: "Tarea 3", completed: false },
-  { text: "Tarea 4", completed: false },
-];
+// const defaultTodos = [
+//   { text: "Tarea 1", completed: true },
+//   { text: "Tarea 2", completed: false },
+//   { text: "Tarea 3", completed: false },
+//   { text: "Tarea 4", completed: false },
+// ];
 
-//context
+// localStorage.setItem("TODOLIST_V1", JSON.stringify(defaultTodos));
+// localStorage.removeItem('TODOLIST_V1');
+
+//Practicar con context
+
+//LocalStorage
+const useLocalStorage = (itemName, initialValue) => {
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify([initialValue]));
+    parsedItem = initialValue;
+  } else {
+    parsedItem = JSON.parse(localStorageItem);
+  }
+  const [item, setItem] = React.useState(parsedItem);
+  const saveItem = (newItem) => {
+    localStorage.setItem(itemName, JSON.stringify(newItem));
+    setItem(newItem);
+  };
+  return [item, saveItem];
+};
 
 function App() {
+  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
   //Obtener el value del todoSearch
   const [searchValue, setSearchValue] = React.useState("");
   //Contar totales y completados del TodoCounter
-  const [todos, setTodos] = React.useState(defaultTodos);
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;
   //Buscar tarea en Todo Search
@@ -27,19 +48,20 @@ function App() {
     const searchText = searchValue.toLocaleLowerCase();
     return todoText.includes(searchText);
   });
+
   //Aplicar Check a tarea
   const checkTodo = (text) => {
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex((todo) => todo.text === text);
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
   //Eliminar Tarea
   const deleteTodo = (text) => {
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex((todo) => todo.text === text);
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
   return (
     <>
