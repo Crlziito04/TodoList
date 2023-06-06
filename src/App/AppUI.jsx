@@ -7,53 +7,72 @@ import { CreateTodoButton } from "../components/CreateTodoButton/CreateTodoButto
 import { TodoError } from "../components/TodoError/TodoError";
 import { TodoLoading } from "../components/TodoLoading/TodoLoading";
 import { EmptyTodo } from "../components/EmptyTodo/EmptyTodo";
+import { TodoContext } from "../context/TodoContext";
+import { Modal } from "../components/Modal/Modal";
+import { TodoForm } from "../components/TodoForm/TodoForm";
+const AppUI = () =>
+  // loading,
+  // error,
+  // completedTodos,
+  // totalTodos,
+  // searchValue,
+  // setSearchValue,
+  // searchTodos,
+  // checkTodo,
+  // deleteTodo,
 
-const AppUI = ({
-  loading,
-  error,
-  completedTodos,
-  totalTodos,
-  searchValue,
-  setSearchValue,
-  searchTodos,
-  checkTodo,
-  deleteTodo,
-}) => {
-  return (
-    <>
-      {loading ? (
-        <TodoLoading />
-      ) : (
-        <>
-          <TodoCounter completed={completedTodos} total={totalTodos} />
-          <TodoSearch
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-          />
-          <TodoList>
-            {error && <TodoError />}
+  {
+    return (
+      <TodoContext.Consumer>
+        {({
+          loading,
+          error,
+          completedTodos,
+          totalTodos,
+          searchValue,
+          setSearchValue,
+          searchTodos,
+          checkTodo,
+          deleteTodo,
+          openModal,
+        }) => (
+          <>
+            {loading ? (
+              <TodoLoading />
+            ) : (
+              <>
+                <TodoCounter completed={completedTodos} total={totalTodos} />
+                <TodoSearch
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                />
+                <TodoList>
+                  {error && <TodoError />}
 
-            {!loading && searchTodos.length === 0 && <EmptyTodo />}
-            {searchTodos.map((todo) => (
-              <TodoItem
-                key={todo.text}
-                text={todo.text}
-                completed={todo.completed}
-                onCheck={() => checkTodo(todo.text)}
-                onDelete={() => deleteTodo(todo.text)}
-              />
-            ))}
-          </TodoList>
+                  {!loading && searchTodos.length === 0 && <EmptyTodo />}
+                  {searchTodos.map((todo) => (
+                    <TodoItem
+                      key={todo.text}
+                      text={todo.text}
+                      completed={todo.completed}
+                      onCheck={() => checkTodo(todo.text)}
+                      onDelete={() => deleteTodo(todo.text)}
+                    />
+                  ))}
+                </TodoList>
 
-          <CreateTodoButton />
-        </>
-      )}
-
-      {/* {searchValue === "" ? (
-        <h1>Nada</h1>
-      ) : ( */}
-    </>
-  );
-};
+                <CreateTodoButton />
+                {openModal && (
+                  <Modal>
+                    <TodoForm />
+                  </Modal>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </TodoContext.Consumer>
+    );
+  };
 
 export { AppUI };

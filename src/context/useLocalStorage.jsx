@@ -35,3 +35,13 @@ const useLocalStorage = (itemName, initialValue) => {
 };
 
 export { useLocalStorage };
+
+// const defaultTodos = [
+//   { text: "Tarea 1", completed: true },
+//   { text: "Tarea 2", completed: false },
+//   { text: "Tarea 3", completed: false },
+//   { text: "Tarea 4", completed: false },
+// ];
+
+// localStorage.setItem("TODOLIST_V1", JSON.stringify(defaultTodos));
+// localStorage.removeItem('TODOLIST_V1');
